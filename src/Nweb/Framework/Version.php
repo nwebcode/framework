@@ -1,11 +1,8 @@
 <?php
 /**
- * Nweb Framework 3.0
+ * Nweb Framework
  *
- * This script is protected by copyright. It's use, copying, modification
- * and distribution without written consent of the author is prohibited.
- *
- * @category    Nweb
+ * @category    NwebFramework
  * @package     Version
  * @author      Krzysztof Kardasz <krzysztof@kardasz.eu>
  * @copyright   Copyright (c) 2013 Krzysztof Kardasz
@@ -18,9 +15,9 @@
 namespace Nweb\Framework;
 
 /**
- * Informacje o wersji
+ * Framework version
  *
- * @category    Nweb
+ * @category    NwebFramework
  * @package     Version
  * @author      Krzysztof Kardasz <krzysztof@kardasz.eu>
  * @copyright   Copyright (c) 2013 Krzysztof Kardasz
@@ -29,22 +26,22 @@ namespace Nweb\Framework;
 class Version
 {
     /**
-     * Wersja oprogramowania
+     * Version
      */
     const VERSION = '0.1.0';
 
     /**
-     * Najnowsza dostępna wersja
+     * Latest version
      *
      * @var string
      */
     protected static $_latestVersion;
 
     /**
-     * Porównanie wersji
+     * Version compare
      *
-     * @param  string  $version wersja
-     * @return integer [-1 starsza, 0 identyczna, +1 nowsza]
+     * @param  string  $version version
+     * @return integer [-1 older, 0 identical, +1 newer]
      */
     public static function compareVersion ($version)
     {
@@ -52,7 +49,7 @@ class Version
     }
 
     /**
-     * Zwraca najnowszą dostępną wersję oprogramowania
+     * Get lates version numver
      *
      * @return string
      */
