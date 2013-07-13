@@ -19,6 +19,6 @@
         "nweb/image": "Image library"
     },
     "autoload": {
-        "psr-0": {"nweb\\framework\\": "src/"}
+        "psr-0": {"Nweb\\Framework\\": "src/"}
     }
 }

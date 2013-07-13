@@ -15,7 +15,7 @@
  * @link        http://framework.nweb.pl
  */
 
-namespace nweb\framework;
+namespace Nweb\Framework;
 
 /**
  * Informacje o wersji
