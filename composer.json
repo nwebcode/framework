@@ -1,0 +1,24 @@
+{
+    "name": "nweb/framework",
+    "description": "Fast Framework",
+    "keywords": ["framework"],
+    "homepage": "https://github.com/nwebcode/framework",
+    "type": "library",
+    "license": "LGPL-3.0+",
+    "authors": [
+        {
+            "name": "Krzysztof Kardasz",
+            "email": "krzysztof@kardasz.eu",
+            "homepage": "http://kardasz.eu"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.6"
+    },
+    "suggest": {
+        "nweb/image": "Image library"
+    },
+    "autoload": {
+        "psr-0": {"nweb\\framework\\": "src/"}
+    }
+}
