@@ -4,7 +4,6 @@
  *
  * @category    NwebFramework
  * @package     Application
- * @subpackage  Controller
  * @author      Krzysztof Kardasz <krzysztof@kardasz.eu>
  * @copyright   Copyright (c) 2013 Krzysztof Kardasz
  * @license     http://www.gnu.org/licenses/lgpl-3.0.txt  GNU Lesser General Public
@@ -13,22 +12,27 @@
  * @link        http://framework.nweb.pl
  */
 
-namespace Nweb\Framework\Application;
+namespace Nweb\Framework;
 
 /**
- * Basic application controller
+ * Application
  *
  * @category    NwebFramework
  * @package     Application
- * @subpackage  Controller
  * @author      Krzysztof Kardasz <krzysztof@kardasz.eu>
  * @copyright   Copyright (c) 2013 Krzysztof Kardasz
  * @version     0.1-dev
  */
-class Controller
+class Application
 {
-    public function dispatch ($action)
-    {
+    /**
+     * @param array $config
+     */
+    public function __construct (array $config)
+    {}
 
-    }
+    /**
+     */
+    public function run ()
+    {}
 }

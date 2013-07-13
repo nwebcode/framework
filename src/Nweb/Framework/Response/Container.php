@@ -3,8 +3,7 @@
  * Nweb Framework
  *
  * @category    NwebFramework
- * @package     Application
- * @subpackage  Controller
+ * @package     Response
  * @author      Krzysztof Kardasz <krzysztof@kardasz.eu>
  * @copyright   Copyright (c) 2013 Krzysztof Kardasz
  * @license     http://www.gnu.org/licenses/lgpl-3.0.txt  GNU Lesser General Public
@@ -13,22 +12,32 @@
  * @link        http://framework.nweb.pl
  */
 
-namespace Nweb\Framework\Application;
+namespace Nweb\Framework\Response;
 
 /**
- * Basic application controller
+ * Response container interface
  *
  * @category    NwebFramework
- * @package     Application
- * @subpackage  Controller
+ * @package     Response
  * @author      Krzysztof Kardasz <krzysztof@kardasz.eu>
  * @copyright   Copyright (c) 2013 Krzysztof Kardasz
  * @version     0.1-dev
  */
-class Controller
+abstract class Container
 {
-    public function dispatch ($action)
-    {
+    /**
+     */
+    public function setController (\Nweb\Framework\Application\Controller $controller)
+    {}
 
-    }
+    /**
+     * @return \Nweb\Framework\Application\Controller
+     */
+    public function getController ()
+    {}
+
+    /**
+     * @return string
+     */
+    abstract public function render ();
 }
