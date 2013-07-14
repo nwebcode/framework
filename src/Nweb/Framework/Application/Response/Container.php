@@ -12,10 +12,12 @@
  * @link        http://framework.nweb.pl
  */
 
-namespace Nweb\Framework\Response\Container;
+namespace Nweb\Framework\Application\Response;
+
+use \Nweb\Framework\Application\Controller;
 
 /**
- * Response container view
+ * Response container interface
  *
  * @category    NwebFramework
  * @package     Response
@@ -23,27 +25,21 @@ namespace Nweb\Framework\Response\Container;
  * @copyright   Copyright (c) 2013 Krzysztof Kardasz
  * @version     0.1-dev
  */
-class JsonArray implements \Nweb\Framework\Response\Container
+abstract class Container
 {
     /**
-     *  @var array
      */
-    protected $json = array();
+    public function setController (Controller $controller)
+    {}
 
     /**
-     * @param array $json
+     * @return \Nweb\Framework\Application\Controller
      */
-    public function __construct (array $json = array())
-    {
-        $this->json = $json;
-    }
+    public function getController ()
+    {}
 
     /**
-     * (non-PHPdoc)
-     * @see \Nweb\Framework\Response\Container::render()
+     * @return string
      */
-    public function render ()
-    {
-        return json_encode($this->json);
-    }
+    abstract public function render ();
 }

@@ -36,6 +36,11 @@ class Response
     protected $headers = array();
 
     /**
+     * @var \Nweb\Framework\Http\Response\Cookie []
+     */
+    protected $cookies = array();
+
+    /**
      * @var string
      */
     protected $body = '';
@@ -58,17 +63,14 @@ class Response
         if (!isset($this->headers[$header]) || $replace) {
             $this->headers[$header] = $value;
         }
-
-        // HTTP/1.1 200 OK
     }
 
     /**
-     * @param string $header
-     * @param string $value
-     * @param bool $replace
+     * @param \Nweb\Framework\Http\Response\Cookie $cookie
      */
-    public function setCookie (Response\Cookie $cookie)
+    public function setCookie (\Nweb\Framework\Http\Response\Cookie $cookie)
     {
+        $this->cookies[] = $cookie;
     }
 
     /**
@@ -84,17 +86,22 @@ class Response
     }
 
     /**
-     *
      */
     public function send ()
     {
         $protocol = (isset($_SERVER['SERVER_PROTOCOL'])) ? $_SERVER['SERVER_PROTOCOL'] : 'HTTP/1.0';
         $desc     = (isset(Response\Code::$httpCodes[$this->code])) ? Response\Code::$httpCodes[$this->code] : '';
+
         header($protocol . ' ' . $this->code . ' ' . $desc);
 
-        $sendCode = false;
         foreach ($this->headers as $header => $value) {
             header(($header . ': ' . $value), true);
         }
+
+        foreach ($this->cookies as $cookie) {
+            $cookie->send();
+        }
+
+        echo $this->body;
     }
 }

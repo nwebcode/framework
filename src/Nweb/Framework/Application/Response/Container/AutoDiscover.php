@@ -12,7 +12,7 @@
  * @link        http://framework.nweb.pl
  */
 
-namespace Nweb\Framework\Response\Container;
+namespace Nweb\Framework\Application\Response\Container;
 
 /**
  * Response container view
@@ -23,7 +23,7 @@ namespace Nweb\Framework\Response\Container;
  * @copyright   Copyright (c) 2013 Krzysztof Kardasz
  * @version     0.1-dev
  */
-class Auto implements \Nweb\Framework\Response\Container
+class AutoDiscover extends \Nweb\Framework\Application\Response\Container
 {
     /**
      *  @var mixed

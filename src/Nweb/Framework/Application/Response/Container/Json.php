@@ -12,10 +12,10 @@
  * @link        http://framework.nweb.pl
  */
 
-namespace Nweb\Framework\Response;
+namespace Nweb\Framework\Application\Response\Container;
 
 /**
- * Response container interface
+ * Response container view
  *
  * @category    NwebFramework
  * @package     Response
@@ -23,21 +23,27 @@ namespace Nweb\Framework\Response;
  * @copyright   Copyright (c) 2013 Krzysztof Kardasz
  * @version     0.1-dev
  */
-abstract class Container
+class Json extends \Nweb\Framework\Application\Response\Container
 {
     /**
+     *  @var array
      */
-    public function setController (\Nweb\Framework\Application\Controller $controller)
-    {}
+    protected $json = array();
 
     /**
-     * @return \Nweb\Framework\Application\Controller
+     * @param array $json
      */
-    public function getController ()
-    {}
+    public function __construct (array $json = array())
+    {
+        $this->json = $json;
+    }
 
     /**
-     * @return string
+     * (non-PHPdoc)
+     * @see \Nweb\Framework\Response\Container::render()
      */
-    abstract public function render ();
+    public function render ()
+    {
+        return json_encode($this->json);
+    }
 }

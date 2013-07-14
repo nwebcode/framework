@@ -27,8 +27,32 @@ namespace Nweb\Framework\Application;
  */
 class Controller
 {
+    /**
+     *
+     */
+    protected $responseContainer = null;
+
+    public function setResponseContainer()
+    {
+    }
+
+    public function getResponseContainer()
+    {
+        if (null === $this->responseContainer) {
+            // get class from config
+            $this->getConfig('Controller:Response.Container');
+
+            $this->setResponseContainer(
+                new \Nweb\Framework\Application\Response\Container\AutoDiscover()
+            );
+        }
+        return $this->responseContainer;
+    }
+
     public function dispatch ($action)
     {
+        $responseContainer = $this->getServiceLocator()->get('\Nweb\Framework\Application\Response\Container');
+
 
     }
 }
