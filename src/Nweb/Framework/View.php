@@ -23,7 +23,7 @@ namespace Nweb\Framework;
  * @copyright   Copyright (c) 2013 Krzysztof Kardasz
  * @version     0.1-dev
  */
-class View
+class View implements \Nweb\Framework\Event\Aware
 {
     /**
      * @var array
@@ -34,6 +34,11 @@ class View
      * @var array
      */
     protected $callbacks = array();
+
+    /**
+     * @var \Nweb\Framework\Event\Manager
+     */
+    protected $eventManager;
 
     /**
      * @param array $variables
@@ -171,8 +176,6 @@ class View
                     $callback[0]->setView($this);
                 }
                 $this->callbacks[$name] = $callback;
-            } else {
-                // @todo throw exception
             }
         } else {
             // @todo throw exception
@@ -191,8 +194,6 @@ class View
             if ($force || !isset($this->callbacks[$name])) {
                 $helper->setView($this);
                 $this->callbacks[$name] = array($helper, $name);
-            } else {
-                // @todo throw exception
             }
         } else {
             // @todo throw exception
@@ -229,7 +230,66 @@ class View
     }
 
     /**
+     * @return \Nweb\Framework\Event\Manager
+     */
+    public function getEventManager ()
+    {
+        if (isset($this->eventManager)) {
+            $this->setEventManager(new \Nweb\Framework\Event\Manager(__CLASS__));
+        }
+    }
+
+    /**
+     * @param \Nweb\Framework\Event\Manager $manager
+    */
+    public function setEventManager (\Nweb\Framework\Event\Manager $manager)
+    {
+        $this->eventManager = $manager;
+    }
+
+    /**
+     * @param string $file
+     * @return string
+     */
+    protected function readFile ($file)
+    {
+        $this->getEventManager()->trigger(
+            View\Event::EVENT_READ_FILE_PRE,
+            array(&$file)
+        );
+
+        if (!is_file($file)) {
+            // @todo throw exception
+        }
+
+        ob_start();
+        include $file;
+        $contents = ob_get_clean();
+
+        $this->getEventManager()->trigger(
+            View\Event::EVENT_READ_FILE_POST,
+            array(&$contents)
+        );
+    }
+
+    /**
+     * @param string $file
+     * @return string
      */
     public function render ($file)
-    {}
+    {
+        $this->getEventManager()->trigger(
+            View\Event::EVENT_RENDER_PRE,
+            array(&$file)
+        );
+
+        $contents = $this->readFile($file);
+
+        $this->getEventManager()->trigger(
+            View\Event::EVENT_RENDER_PRE,
+            array(&$contents)
+        );
+
+        return $contents;
+    }
 }
