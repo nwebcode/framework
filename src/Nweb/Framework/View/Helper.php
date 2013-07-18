@@ -12,7 +12,7 @@
  * @link        http://framework.nweb.pl
  */
 
-namespace Nweb\Framework;
+namespace Nweb\Framework\View;
 
 /**
  * Application
@@ -23,25 +23,27 @@ namespace Nweb\Framework;
  * @copyright   Copyright (c) 2013 Krzysztof Kardasz
  * @version     0.1-dev
  */
-class Application
+abstract class Helper
 {
     /**
-     * @var \Nweb\Framework\Config
+     * @var \Nweb\Framework\View
      */
-    protected $config;
+    protected $view;
 
     /**
-     * @param array $config
+     * (non-PHPdoc)
+     * @see \Nweb\Framework\View\ViewCallable::setView()
      */
-    public function __construct (array $config)
+    public function setView (\Nweb\Framework\View $view)
     {
-        $this->config = new Config($config);
+        $this->view = $view;
     }
 
     /**
+     * @return \Nweb\Framework\View
      */
-    public function run ()
+    public function getView ()
     {
-
+        return $this->view;
     }
 }
