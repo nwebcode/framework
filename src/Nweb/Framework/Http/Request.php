@@ -47,6 +47,12 @@ class Request
      */
     public function getParam ($key, $default = null)
     {
+        if (isset($_POST[$key])) {
+            return $_POST[$key];
+        } else if (isset($_GET[$key])) {
+            return $_GET[$key];
+        }
+        return $default;
     }
 
     /**
