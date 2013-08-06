@@ -27,18 +27,49 @@ class Request
 {
     /**
      */
-    public function getQuery ()
-    {
-    }
-    /**
-     */
-    public function getPost ()
+    public function getBaseUrl ()
     {
     }
 
     /**
      */
-    public function getBody ()
+    public function getRequestUri ()
+    {
+    }
+
+    /**
+     */
+    public function getPath ()
+    {
+    }
+
+    /**
+     */
+    public function getParam ($key, $default = null)
+    {
+    }
+
+    /**
+     */
+    public function getHeader ($key, $default = null)
+    {
+    }
+
+    /**
+     */
+    public function getQuery ($key = null, $default = null)
+    {
+    }
+
+    /**
+     */
+    public function getPost ($key = null, $default = null)
+    {
+    }
+
+    /**
+     */
+    public function getRawPost ()
     {
     }
 
@@ -75,5 +106,11 @@ class Request
     public function isHead ()
     {
         return strcasecmp($_SERVER['REQUEST_METHOD'], 'head') === 0;
+    }
+
+    /**
+     */
+    public function isSecure ()
+    {
     }
 }
