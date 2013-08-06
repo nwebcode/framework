@@ -38,11 +38,8 @@ class Post
      * @param mixed $default
      * @return string
      */
-    public function get ($key = null, $default = null)
+    public function get ($key, $default = null)
     {
-        if (null === $key) {
-            return $_POST;
-        }
         return (isset($_POST[$key])) ? $_POST[$key] : $default;
     }
 

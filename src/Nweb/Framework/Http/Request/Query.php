@@ -39,11 +39,8 @@ class Query
      * @param mixed $default
      * @return string
      */
-    public function get ($key = null, $default = null)
+    public function get ($key, $default = null)
     {
-        if (null === $key) {
-            return $_GET;
-        }
         return (isset($_GET[$key])) ? $_GET[$key] : $default;
     }
 }
