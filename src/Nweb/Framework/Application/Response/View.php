@@ -14,8 +14,6 @@
 
 namespace Nweb\Framework\Application\Response;
 
-use \Nweb\Framework\Application\Controller;
-
 /**
  * Response container interface
  *
@@ -25,21 +23,35 @@ use \Nweb\Framework\Application\Controller;
  * @copyright   Copyright (c) 2013 Krzysztof Kardasz
  * @version     0.1-dev
  */
-abstract class Container
+class View extends ResponseAbstract
 {
     /**
+     * @var array
      */
-    public function setController (Controller $controller)
-    {}
+    protected $assign = array();
 
     /**
-     * @return \Nweb\Framework\Application\Controller
+     * @var string
      */
-    public function getController ()
-    {}
+    protected $file = null;
+
+    /**
+     * @param array $assign
+     * @param string $file
+     */
+    public function __construct (array $assign = array(), $file = null)
+    {
+        $this->assign = $assign;
+        $this->file   = $file;
+    }
 
     /**
      * @return string
      */
-    abstract public function render ();
+    public function send ()
+    {
+        $this->getController()->getHttpRequest();
+        $this->getController()->getHttpResponse();
+
+    }
 }

@@ -286,7 +286,7 @@ class View implements \Nweb\Framework\Event\Aware
         $contents = $this->readFile($file);
 
         $this->getEventManager()->trigger(
-            View\Event::EVENT_RENDER_PRE,
+            View\Event::EVENT_RENDER_POST,
             array(&$contents)
         );
 

@@ -27,23 +27,115 @@ namespace Nweb\Framework\Application;
  */
 class Dispatcher
 {
-    public function dispatch ($controller, $action)
+    /**
+     * @var \Nweb\Framework\Application
+     */
+    protected $app = null;
+
+    /**
+     * @var string|\Nweb\Framework\Application\Controller
+     */
+    protected $controller = null;
+
+    /**
+     * @var string
+     */
+    protected $action = null;
+
+    /**
+     * @var array
+     */
+    protected $params = array();
+
+    /**
+     * @var bool
+     */
+    protected $next = false;
+
+    /**
+     * @param \Nweb\Framework\Application $app
+     */
+    public function setApplication (\Nweb\Framework\Application $app)
     {
-        if (!class_exists($controller, true)) {
-
-        }
-        do {
-            $controllerObj     = new $controller();
-            $responseContainer = $controllerObj->dispatch($action);
-
-            if ($forward = ($responseContainer instanceof Forward)) {
-                $controller = $responseContainer->getController();
-            }
-
-        } while($forward);
-
-
-
+        $this->app = $app;
     }
 
+    /**
+     * @return \Nweb\Framework\Application
+     */
+    public function getApplication ()
+    {
+        return $this->app;
+    }
+
+    /**
+     * @param string $controller
+     */
+    public function setController ($controller)
+    {
+        $this->controller = $controller;
+    }
+
+    /**
+     * @param string $action
+     */
+    public function setAction ($action)
+    {
+        $this->action = $action;
+    }
+
+    /**
+     * @param array $params
+     */
+    public function setParams (array $params)
+    {
+        $this->params = $params;
+    }
+
+    /**
+     */
+    public function next ()
+    {
+        $this->next = true;
+    }
+
+    /**
+     */
+    public function dispatch ()
+    {
+        $eventManager   = $this->getApplication()->getEventManager();
+        $serviceLocator = $this->getApplication()->getServiceLocator();
+        do {
+            if (is_string($this->controller)) {
+                if ($serviceLocator->has($this->controller)) {
+                    $obj = $serviceLocator->get($this->controller);
+                } else {
+                    if (!class_exists($this->controller, true)) {
+                        // throw exception
+                    }
+                    $class = $this->controller;
+                    $obj = new $class();
+                }
+            } else {
+                $obj = $this->controller;
+            }
+
+            if (!is_object($obj) || !$obj instanceof \Nweb\Framework\Application\Controller) {
+                // throw exception
+            }
+            $method = $this->action . 'Action';
+            if (method_exists($obj, $method)) {
+                $obj->setApplcation($this->getApplication());
+
+                $results = call_user_func_array(array($obj, $method), $this->params);
+
+                if ($results instanceof Response) {
+                    $results->setController($obj);
+                    $results->send();
+                }
+            } else {
+                // throw exception
+            }
+        } while ($this->next);
+    }
 }

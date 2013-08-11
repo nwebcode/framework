@@ -28,31 +28,41 @@ namespace Nweb\Framework\Application;
 class Controller
 {
     /**
-     *
+     * @var \Nweb\Framework\Application
      */
-    protected $responseContainer = null;
+    protected $application;
 
-    public function setResponseContainer()
+    /**
+     * @param \Nweb\Framework\Application $application
+     */
+    public function setApplcation (\Nweb\Framework\Application $application)
     {
+        $this->application = $application;
     }
 
-    public function getResponseContainer()
+    /**
+     * @return \Nweb\Framework\Application
+     */
+    public function getApplication ()
     {
-        if (null === $this->responseContainer) {
-            // get class from config
-            $this->getConfig('Controller:Response.Container');
-
-            $this->setResponseContainer(
-                new \Nweb\Framework\Application\Response\Container\AutoDiscover()
-            );
+        if (null === $this->application) {
+            // throw exception
         }
-        return $this->responseContainer;
+        return $this->application;
     }
 
-    public function dispatch ($action)
+    public function getHttpRequest ()
     {
-        $responseContainer = $this->getServiceLocator()->get('\Nweb\Framework\Application\Response\Container');
+        return $this->getApplication()->getHttpRequest();
+    }
 
+    public function getHttpResponse ()
+    {
+        return $this->getApplication()->getHttpResponse();
+    }
 
+    public function getDispatcher ()
+    {
+        return $this->getApplication()->getDispatcher();
     }
 }
