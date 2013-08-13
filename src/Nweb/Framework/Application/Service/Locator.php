@@ -28,29 +28,40 @@ namespace Nweb\Framework\Application\Service;
 class Locator
 {
     /**
-     *
+     * @var array
      */
-    protected $responseContainer = null;
+    protected $services = array();
 
-    public function setResponseContainer()
+    /**
+     * @param string $name
+     * @return bool
+     */
+    public function has ($name)
     {
+        return isset($this->services[$name]);
     }
 
-    public function get()
+    /**
+     * @param string $name
+     * @return callable
+     */
+    public function get ($name)
     {
-        if (null === $this->responseContainer) {
-            // get class from config
-            $this->getConfig('Controller:Response.Container');
-
-            $this->setResponseContainer(
-                new \Nweb\Framework\Application\Response\Container\AutoDiscover()
-            );
+        if (isset($this->services[$name])) {
+            return $this->services[$name];
         }
-        return $this->responseContainer;
     }
 
-    public function dispatch ($action)
+    /**
+     * @param string $name
+     * @param callable $callback
+     */
+    public function set ($name, $callback)
     {
-        $responseContainer = $this->getServiceLocator()->get('\Nweb\Framework\Application\Response\Container');
+        if (is_callable($callback)) {
+            $this->services[$name] = $callback;
+        } else {
+            // @todo throw exception
+        }
     }
 }

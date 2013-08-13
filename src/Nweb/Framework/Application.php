@@ -31,12 +31,34 @@ class Application
     protected $config;
 
     /**
+     * @var \Nweb\Framework\Config
+     */
+    protected $serviceLocator;
+
+    /**
      * @param array $config
      */
     public function __construct (array $config)
     {
         $this->config = new Config($config);
     }
+
+    public function getEventManager ()
+    {}
+
+    /**
+     * @return \Nweb\Framework\Application\Service
+     */
+    public function getServiceLocator ()
+    {
+        if (null === $this->serviceLocator) {
+            $this->serviceLocator = new Application\Service\Locator();
+
+            // @todo Read config and add services
+        }
+        return $this->serviceLocator;
+    }
+
 
     /**
      */
