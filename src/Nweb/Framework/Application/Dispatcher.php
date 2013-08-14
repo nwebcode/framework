@@ -105,6 +105,8 @@ class Dispatcher
     {
         $eventManager   = $this->getApplication()->getEventManager();
         $serviceLocator = $this->getApplication()->getServiceLocator();
+        $dependencyInjection = $this->getApplication()->getDependencyInjection();
+
         do {
             if (is_string($this->controller)) {
                 if ($serviceLocator->has($this->controller)) {
@@ -123,6 +125,14 @@ class Dispatcher
             if (!is_object($obj) || !$obj instanceof \Nweb\Framework\Application\Controller) {
                 // throw exception
             }
+
+            if ($obj instanceof Service\LocatorAware) {
+                $obj->setServiceLocator($serviceLocator);
+            }
+
+
+
+
             $method = $this->action . 'Action';
             if (method_exists($obj, $method)) {
                 $obj->setApplcation($this->getApplication());
