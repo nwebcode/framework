@@ -50,8 +50,13 @@ class View extends ResponseAbstract
      */
     public function send ()
     {
-        $this->getController()->getHttpRequest();
-        $this->getController()->getHttpResponse();
-
+        $request = $this->getController()->getHttpRequest();
+        $response = $this->getController()->getHttpResponse();
+        $response = $this->getController()->getHttpResponse();
+        
+        $view = new \Nweb\Framework\View (
+    	
+        );
+        
     }
 }
