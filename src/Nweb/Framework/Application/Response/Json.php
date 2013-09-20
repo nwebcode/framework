@@ -23,26 +23,20 @@ namespace Nweb\Framework\Application\Response;
  * @copyright   Copyright (c) 2013 Krzysztof Kardasz
  * @version     0.1-dev
  */
-class View extends ResponseAbstract
+class Json extends ResponseAbstract
 {
     /**
      * @var array
      */
-    protected $assign = array();
-
-    /**
-     * @var string
-     */
-    protected $file = null;
+    protected $data = array();
 
     /**
      * @param array $assign
      * @param string $file
      */
-    public function __construct (array $assign = array(), $file = null)
+    public function __construct (array $data = array())
     {
-        $this->assign = $assign;
-        $this->file   = $file;
+        $this->data = $data;
     }
 
     /**
@@ -50,14 +44,8 @@ class View extends ResponseAbstract
      */
     public function send ()
     {
-        $request = $this->getController()->getHttpRequest();
         $response = $this->getController()->getHttpResponse();
-        
-        $view = new \Nweb\Framework\View (
-    	
-        );
-        
-        $response->setBody();
+        $response->setBody(json_encode($this->data));
         $response->send();
     }
 }
