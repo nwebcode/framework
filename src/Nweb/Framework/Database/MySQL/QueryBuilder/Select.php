@@ -90,8 +90,12 @@ class Select
 
     /**
      */
-    public function where ($where)
-    {}
+    public function where ($where, $bind = null)
+    {
+        if (is_string($where) && null !== $bind) {
+            $where = str_replace('?', $bind, $where);
+        }
+    }
 
     /**
      */
@@ -117,6 +121,33 @@ class Select
      */
     public function offset ($offset)
     {}
+
+    /**
+     */
+    public function setDbAdapter ($str)
+    {}
+
+    /**
+     */
+    public function getDbAdapter ()
+    {
+        
+    }
+
+    /**
+     */
+    protected function quote ($str)
+    {
+        if ($str instanceof NoQuote) {
+            return (string)$str;
+        }
+        
+        if (null === $this->getDbAdapter()) {
+            // throw exception
+        }
+        
+        return $this->getDbAdapter()->quote($str);
+    }
 
     /**
      */
