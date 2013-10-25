@@ -25,5 +25,39 @@ namespace Nweb\Framework\Application;
  * @copyright   Copyright (c) 2013 Krzysztof Kardasz
  * @version     0.1-dev
  */
-class Module
-{}
+abstract class Module
+{
+    /**
+     * @var \Nweb\Framework\Application
+     */
+    protected $appObj;
+    
+    /**
+     * 
+     */
+    abstract public function init();
+    
+    /**
+     * @param \Nweb\Framework\Application $appObj
+     */
+    public function setApplication (\Nweb\Framework\Application $appObj)
+    {
+    	$this->appObj = $appObj;
+    }
+    
+    /**
+     * @return \Nweb\Framework\Application
+     */
+    public function getApplication ()
+    {
+    	return $this->appObj;
+    }
+    
+    /**
+     * @return \Nweb\Framework\Application
+     */
+    public function getService ($name)
+    {
+    	return $this->getApplication()->getServiceLocator()->get($name);
+    }
+}

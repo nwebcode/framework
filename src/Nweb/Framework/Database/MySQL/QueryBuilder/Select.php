@@ -50,18 +50,23 @@ class Select
      */
     public function col ($columns = self::SQL_WILDCARD)
     {
-        $this->columns = array_merge($this->columns, (array)$columns);
+        if (is_array($columns)) {
+            $this->columns = array_merge($this->columns, $columns);
+        } else {
+            $this->columns[] = $columns;
+        }
     }
 
     /**
      */
-    public function from ($tables)
+    public function from ($from)
     {
-        if (is_string($columns)) {
-            $this->columns[] = $columns;
-        } else if (is_array($columns)) {
-            $this->columns = array_merge($this->columns, $columns);
-        }}
+        if (is_array($from)) {
+            $this->from = array_merge($this->from, $from);
+        } else {
+            $this->from[] = $from;
+        }
+    }
 
     /**
      */
@@ -153,7 +158,24 @@ class Select
      */
     public function __toString()
     {
-        $sql = '';
+        $sql = 'SELECT';
+        if (count($this->columns)) {
+            $sqlCols = array();
+            foreach ($this->columns as $alias => $col) {
+                if (is_int($col)) {
+                    $sqlCols[] = $alias;
+                } else {
+                    if (!$col instanceof NoQuote) {
+                        $col = '`' . $col . '`';
+                    }
+                    $sqlCols[] = $col . ' AS ' .$alias;
+                }
+            }
+            $sql .= ' ' . implode(', ', $sqlCols);
+        } else {
+            $sql .= ' *';
+        }
+        
     	
     }
 }

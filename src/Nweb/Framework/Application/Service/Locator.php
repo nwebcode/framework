@@ -33,16 +33,6 @@ class Locator
     protected $services = array();
 
     /**
-     * @var array
-     */
-    protected $shared = array();
-
-    /**
-     * @var array
-     */
-    protected $params = array();
-
-    /**
      * @param string $name
      * @return bool
      */
@@ -52,49 +42,23 @@ class Locator
     }
 
     /**
-     *
      * @param string $name
-     * @param array $params
-     * @return mixed
+     * @return object
      */
-    public function get ($name, array $params = null)
+    public function get ($name)
     {
-        if (null === $params) {
-            if (isset($this->params[$name])) {
-                $params = $this->params[$name];
-            } else {
-                $params = array();
-            }
+        if (!isset($this->params[$name])) {
+            $params = $this->params[$name];
         }
-
-        if (isset($this->services[$name])) {
-            return call_user_func_array($this->services[$name], $params);
-        }
-
-        if (class_exists($name, true)) {
-            return new $name ($params);
-        }
-
-        if (function_exists($name, true)) {
-            return $name ($params);
-        }
-
-        return null;
+        return $this->services[$name];
     }
 
     /**
      * @param string $name
-     * @param callable $callback
+     * @param object $serviceObj
      */
-    public function set ($name, $callback, array $params = null)
+    public function set ($name, $serviceObj)
     {
-        if (is_callable($callback)) {
-            if (null !== $params) {
-                $this->params[$name] = $params;
-            }
-            $this->services[$name] = $callback;
-        } else {
-            // @todo throw exception
-        }
+        $this->services[$name] = $serviceObj;
     }
 }

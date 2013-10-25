@@ -14,6 +14,9 @@
 
 namespace Nweb\Framework;
 
+use \Nweb\Framework\Application\Exception;
+use Nweb\Framework\Event\Event;
+
 /**
  * Application
  *
@@ -25,10 +28,15 @@ namespace Nweb\Framework;
  */
 class Application
 {
+    const EVENT_EXCEPTION     = 'ApplicationException';
+    const EVENT_PRE_DISPATCH  = 'ApplicationPreDispatch';
+    const EVENT_POST_DISPATCH = 'ApplicationPostDispatch';
+    
+    
     /**
-     * @var \Nweb\Framework\Config
+     * @var array
      */
-    protected $config;
+    protected $modules;
 
     /**
      * @var \Nweb\Framework\Config
@@ -36,34 +44,51 @@ class Application
     protected $serviceLocator;
 
     /**
-     * @param array $config
+     * @param array $modules
      */
-    public function __construct (array $config)
+    public function __construct (array $modules = array())
     {
-        $this->config = new Config($config);
+        $this->modules = $modules;
     }
 
-    public function getEventManager ()
-    {}
-
     /**
-     * @return \Nweb\Framework\Application\Service
+     * @return \Nweb\Framework\Application\Service\Locator
      */
     public function getServiceLocator ()
     {
         if (null === $this->serviceLocator) {
             $this->serviceLocator = new Application\Service\Locator();
-
-            // @todo Read config and add services
         }
         return $this->serviceLocator;
     }
-
 
     /**
      */
     public function run ()
     {
-
+        $serviceLocator = $this->getServiceLocator();
+        $router         = new Application\Router();
+        $dispatcher     = new Application\Dispatcher();
+        $eventManager   = new Event\Manager();
+        
+        $serviceLocator->set('Router', $router);
+        $serviceLocator->set('Dispatcher', $dispatcher);
+        $serviceLocator->set('EventManager', $eventManager);
+        
+        try {
+            foreach ($this->modules as $moduleObj) {
+                if (!$moduleObj instanceof \Nweb\Framework\Application\Module) {
+                    throw new Exception();
+                }
+                $moduleObj->setApplication($this);
+            }
+            if ($route = $router->findRoute()) {
+                $eventManager->trigger(self::EVENT_PRE_DISPATCH, array($this));
+                $dispatcher->dispatch($route->getHandler());
+                $eventManager->trigger(self::EVENT_POST_DISPATCH, array($this));
+            }
+        } catch (\Exception $e) {
+            $eventManager->trigger(self::EVENT_EXCEPTION, array($this, $e));
+        }
     }
 }
