@@ -12,7 +12,7 @@
  * @link        http://framework.nweb.pl
  */
 
-namespace Nweb\Framework\Application;
+namespace Nweb\Framework\Router;
 
 /**
  * Application
@@ -23,5 +23,27 @@ namespace Nweb\Framework\Application;
  * @copyright   Copyright (c) 2013 Krzysztof Kardasz
  * @version     0.1-dev
  */
-class Router
-{}
+interface RouteInterface
+{
+    /**
+     * @param string $uri
+     * @return boolean
+     */
+    public function match ($uri);
+    
+    /**
+     * @param string array $params
+     * @return string
+     */
+    public function assemble (array $params = null);
+    
+    /**
+     * @return mixed
+     */
+    public function getHandler ();
+    
+    /**
+     * @return array
+     */
+    public function getParams ();
+}
